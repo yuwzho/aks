@@ -1,2 +1,3 @@
 ---
 # tasks file for aks
+- include_tasks: resource_group.yml

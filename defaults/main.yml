@@ -1,2 +1,6 @@
 ---
 # defaults file for aks
+location: eastus
+enable_rbac: true
+admin_username: azureuser
+

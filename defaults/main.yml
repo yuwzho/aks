@@ -1,6 +1,26 @@
 ---
 # defaults file for aks
-location: eastus
-enable_rbac: true
-admin_username: azureuser
+location_bak: eastus
+enable_rbac_bak: true
+# linux profile
+admin_username_bak: azureuser
+# agent pool profile
+node_count_bak: 3
+max_pods_bak: 110
+nodepool_name_bak: default
+node_osdisk_size_gb_bak: 30
+node_vm_size_bak: Standard_DS1_v2
+# not included
+storage_profile: ManagedDisks
+os_type: Linux
 
+
+required_bak:
+- name
+- service_principal
+- client_secret
+- resource_group
+
+service_bak:
+- kubernetes_version
+- dns_prefix

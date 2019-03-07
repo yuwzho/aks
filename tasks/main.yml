@@ -1,3 +1,29 @@
 ---
 # tasks file for aks
 - include_tasks: resource_group.yml
+
+- inlcude_task: aks_facts.yml
+
+- include_task: parameter.yml
+
+- include_task: k8s_version.yml
+  when: kubernetes_version not defined and kubernetes_version_bak not defined
+
+- name: Create or update AKS state
+  azure_rm_aks:
+      name: "{{ name }}"
+      resource_group: "{{ resource_group }}"
+      location: "{{ location }}"
+      dns_prefix: "{{ dns_prefix }}"
+      kubernetes_version: "{{ kubernetes_version }}"
+      service_principal:
+          clinet_id: "{{ service_principal }}"
+          client_secret: "{{ client_secret }}"
+      linux_profile:
+          admin_user: "{{ admin_username }}"
+          ssh_key: "{{ ssh_key }}"
+      agent_pool_profiles:
+        - name: "{{ nodepool_name }}"
+          count: "{{ node_count }}"
+          vm_size: "{{ node_vm_size }}"
+          os_disk_size_gb: "{{ node_osdisk_size_gb }}"

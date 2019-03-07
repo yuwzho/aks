@@ -1,0 +1,39 @@
+- name: Get current status of AKS
+  azure_rm_aks:
+      name: "{{ name }}"
+      resource_group: "{{ resource_group }}"
+  register: aks
+
+- set_fact:
+      location_bak: "{{ aks.aks[0].location }}"
+      dns_prefix_bak: "{{ aks.aks[0].dnsPrefix }}"
+      kubernetes_version_bak: "{{ aks.aks[0].kubernetesVersion }}"
+      enable_rbac_bak: "{{ aks.aks[0].enableRBAC }}"
+      # linux profile
+      admin_username: "{{ aks.aks[0].properties.linuxProfile.adminUsername }}"
+      ssh_key: "{{ aks.aks[0].properties.linuxProfile.ssh.publicKeys[0].keyData }}"
+      # agent pool profile
+      node_count_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].count }}"
+      max_pods_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].maxPods }}"
+      nodepool_name_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].name }}"
+      node_osdisk_size_gb_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].osDiskSizeGB }}"
+      os_type: "{{ aks.aks[0].properties.agentPoolProfiles[0].osType }}"
+      node_vm_size_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].vmSize }}"
+      storage_profile: "{{ aks.aks[0].properties.agentPoolProfiles[0].storageProfile }}"
+      # service principal
+      service_principal: "{{ aks.aks[0].properties.agentPoolProfiles[0].servicePrincipalProfile.clientId }}"
+  when: aks.aks | length == 1
+
+- set_fact:
+      http_application_routing_bak: "{{ aks.aks[0].properties.addonProfiles.httpApplicationRouting.enabled }}"
+  when: aks.aks | lenght == 1 and 'httpApplicationRouting' in aks.aks[0].properties.addonProfiles
+
+- set_fact:
+      moniroting_bak: "{{ aks.aks[0].properties.addonProfiles.omsagent.enabled }}"
+      workspace_resource_id_bak: "{{ aks.aks[0].properties.addonProfiles.omsagent.config.logAnalyticsWorkspaceResourceID }}"
+  when: aks.aks | lenght == 1 and 'omsagent' in aks.aks[0].properties.addonProfiles
+
+- set_fact:
+      virtual_node_bak: "{{ aks.aks[0].properties.addonProfiles.aciConnector.enabled }}"
+      subnet_name_bak: "{{ aks.aks[0].properties.addonProfiles.aciConnector.config.SubnetName }}"
+  when: aks.aks | lenght == 1 and 'aciConnector' in aks.aks[0].properties.addonProfiles

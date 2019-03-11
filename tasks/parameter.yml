@@ -6,8 +6,6 @@
       nodepool_name: "{{ nodepool_name | default(nodepool_name_bak, true) }}"
       node_osdisk_size_gb: "{{ node_osdisk_size_gb | default(node_osdisk_size_gb_bak, true) }}"
       node_vm_size: "{{ node_vm_size | default(node_vm_size_bak, true) }}"
-      storage_profile: "{{ storage_profile | default(storage_profile, true) }}"
-      os_type: "{{ os_type | default(os_type, true) }}"
 
 - set_fact:
       dns_prefix: "{{ dns_prefix | default(name, true) }}"

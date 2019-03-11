@@ -2,13 +2,13 @@
 # tasks file for aks
 - include_tasks: resource_group.yml
 
-- inlcude_task: aks_facts.yml
+- include_tasks: aks_facts.yml
 
-- include_task: parameter.yml
+- include_tasks: parameter.yml
 
-- include_task: addon.yml
+- include_tasks: addon.yml
 
-- include_task: k8s_version.yml
+- include_tasks: k8s_version.yml
   when: kubernetes_version not defined and kubernetes_version_bak not defined
 
 - name: Create or update AKS state

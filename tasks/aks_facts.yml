@@ -20,7 +20,7 @@
       os_type: "{{ aks.aks[0].properties.agentPoolProfiles[0].osType }}"
       node_vm_size_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].vmSize }}"
       storage_profile: "{{ aks.aks[0].properties.agentPoolProfiles[0].storageProfile }}"
-      vnet_subnet_id_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].vnet_subnet_id }}"
+      vnet_subnet_id_bak: "{{ aks.aks[0].properties.agentPoolProfiles[0].vnetSubnetID }}"
       # service principal
       service_principal: "{{ aks.aks[0].properties.agentPoolProfiles[0].servicePrincipalProfile.clientId }}"
   when: aks.aks | length == 1

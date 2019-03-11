@@ -1,14 +1,14 @@
 - name: Get current status of AKS
-  azure_rm_aks:
+  azure_rm_aks_facts:
       name: "{{ name }}"
       resource_group: "{{ resource_group }}"
   register: aks
 
 - set_fact:
       location_bak: "{{ aks.aks[0].location }}"
-      dns_prefix_bak: "{{ aks.aks[0].dnsPrefix }}"
-      kubernetes_version_bak: "{{ aks.aks[0].kubernetesVersion }}"
-      enable_rbac_bak: "{{ aks.aks[0].enableRBAC }}"
+      dns_prefix_bak: "{{ aks.aks[0].properties.dnsPrefix }}"
+      kubernetes_version_bak: "{{ aks.aks[0].properties.kubernetesVersion }}"
+      enable_rbac_bak: "{{ aks.aks[0].properties.enableRBAC }}"
       # linux profile
       admin_username: "{{ aks.aks[0].properties.linuxProfile.adminUsername }}"
       ssh_key: "{{ aks.aks[0].properties.linuxProfile.ssh.publicKeys[0].keyData }}"

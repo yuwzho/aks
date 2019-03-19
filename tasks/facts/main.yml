@@ -6,12 +6,6 @@
       dns_prefix_bak: "{{ aks.properties.dnsPrefix }}"
       kubernetes_version_bak: "{{ aks.properties.kubernetesVersion }}"
       enable_rbac_bak: "{{ aks.properties.enableRBAC }}"
-      linux_profile_dict: "{{ aks.properties.linuxProfile }}"
-      agent_pool_profile_dict: "{{ aks.properties.agentPoolProfiles[0] }}"
-      sp_dict: "{{ aks.properties.servicePrincipalProfile }}"
-      linux_profile_dict: "{{ aks.properties.linuxProfile }}"
-      network_profile_dict: "{{ aks.properties.networkProfile }}"
-      addon_profile_dict: "{{ aks.properties.addonProfiles }}"
 
 - include_tasks: addon_profile.yml
   when: "'addonProfiles' in aks.properties"

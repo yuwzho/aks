@@ -113,5 +113,5 @@
 - name: Associate network resources with the node subnet
   include_tasks: kubenet.yml
   vars:
-      resource_group_secondary: aks.node_resource_group
+      resource_group_secondary: "{{ aks.node_resource_group }}"
   when: network_plugin is defined and network_plugin == 'kubenet' and aks.id

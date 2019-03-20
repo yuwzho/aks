@@ -1,38 +1,72 @@
-Role Name
+Azure Kubernetes Service
 =========
 
-A brief description of the role goes here.
+A role help to create Kuberntes Service in Azure.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+The role uses Ansible azure modules, and miniest supported version is `2.8.0`.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| variable | Required | Default Value | description |
+|--|--|--|--|
+| name | yes |  | Name of the Kubernetes Service resource |
+| resource_group | yes | | Resource group of the resource |
+| aad_client_app_id | | | The ID of an Azure Active Directory client application of type `Native`. <br/>This application is for user login via kubectl.|
+| aad_server_app_id | | | The ID of an Azure Active Directory server application of type `Web app/API`. <br/>This application represents the managed cluster's apiserver (Server application). |
+| aad_server_app_secret | | | The secret of an Azure Active Directory server application. |
+| aad_tenant_id | | | The ID of an Azure Active Directory tenant. |
+| admin_username | | azureuser | User account to create on node VMs for SSH access. |
+| service_principal | | Loading from ansible-playbook, environment variable `AZURE_CLIENT_ID` or `~/.azure/credentials` | Service principal used for authentication to Azure APIs. |
+| client_secret | | Loading from ansible-playbook, environment variable `AZURE_SECRET` or `~/.azure/credentials` | Secret associated with the service principal. |
+| dns_prefix | | The same as `name` | Prefix for hostnames that are created. |
+| dns_service_ip | Required when `network_plugin` defined | | An IP address assigned to the Kubernetes DNS service. <br/>*This address must be within the Kubernetes service address range specified by `service_cidr`.* |
+| docker_bridge_cidr | Required when `network_plugin` defined | | A specific IP address and netmask for the Docker bridge, using standard CIDR notation.<br/> *This address must not be in any Subnet IP ranges, or the Kubernetes service address range.* |
+| enable_rbac | | True | Enable Kubernetes Role-Based Access Control. |
+| http_application_routing | | False | Enable `http_application_routing` addon. Configure ingress with automatic public DNS name creation. |
+| kubernetes_version | | First value from `azure_rm_aks_version` module |  Version of Kubernetes to use for creating the cluster. |
+| location | | eastus | Region of the Kubernetes Service resource, will use `resource_group`'s location if not specified. <br/>*Location is required if resource group not exist*|
+| max_pods | | 110| The maximum number of pods deployable to a node. |
+| monitoring | | False | Enable `monitoring` addon. Turn on Log Analytics monitoring. |
+| network_plugin | | | The Kubernetes network plugin to use. |
+| network_policy | | | The Kubernetes network policy to use. Using together with "azure" network plugin. Specify `azure` for Azure network policy manager and `calico` for calico network policy controller. |
+| node_count | | 3 | Number of nodes in the Kubernetes node pool. |
+| node_osdisk_size_gb | | 30 | Size in GB of the OS disk for each node in the node pool. |
+| node_vm_size | | Standard_DS1_v2 | Size of Virtual Machines to create as Kubernetes nodes. |
+| nodepool_name | | nodepool1 | Node pool name, upto 12 alphanumeric characters. |
+| os_type | | Linux | |
+| pod_cidr | Required when `network_plugin` is `kubenet` | |  A CIDR notation IP range from which to assign pod IPs when kubenet is used. <br/>*This range must not overlap with any Subnet IP ranges.* |
+| service_cidr | Required when `network_plugin` defined | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
+| storage_profile | | ManagedDisks | |
+| ssh_key | | Loading from `~/.ssh/id_ras.pub` | Public key path or key contents to install on node VMs for SSH access. |
+| virtual_node | | False | Enable `virtual_node` aadon. Fast provisioning of pods with Azure Container Instance.  |
+| virtual_node_subnet_id | | Create a new resource when `virtual_node` is `True`. | |
+| vnet_subnet_id | | Create a new resource when `virtual_node` is `True` or `network_plugin` defined. | The ID of a subnet in an existing VNet into which to deploy the cluster. |
+| workspace_resource_id | | Use the first Log Analytics Workspace in the `resource_group` or create a new resource when `monitoring` is `True`. | The resource ID of an existing Log Analytics Workspace to use for storing monitoring data. |
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
+Install the role via:
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```bash
+ansible-galaxy install git+https://github.com/yuwzho/aks
+```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Use the role in the playbook:
+
+    - hosts: localhost
+      tasks:
+          - include_role:
+               name: aks
+            vars:
+               name: akscluster
+               resource_group: aksroletest
 
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+MIT

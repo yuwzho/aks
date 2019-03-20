@@ -10,7 +10,7 @@ admin_username_bak: azureuser
 # agent pool profile
 node_count_bak: 3
 max_pods_bak: 110
-nodepool_name_bak: default
+nodepool_name_bak: nodepool1
 node_osdisk_size_gb_bak: 30
 node_vm_size_bak: Standard_DS1_v2
 # not included

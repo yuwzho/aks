@@ -11,7 +11,7 @@ The role uses Ansible azure modules, and miniest supported version is `2.8.0`.
 Role Variables
 --------------
 
-| variable | Required | Default Value | description |
+| Variable | Required | Default Value | Description |
 |--|--|--|--|
 | name | yes |  | Name of the Kubernetes Service resource |
 | resource_group | yes | | Resource group of the resource |
